@@ -9,11 +9,13 @@ from apiclient.http import MediaFileUpload
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
+files = [['Mateusz_Grzybek_mgr.docx', 'application/msword'],
+         ['Therm_mostki_poprawione.xlsx', 'application/msexcel'],
+         ['Załącznik_A.docx', 'application/msword']
+        ]
 
-def main():
-    """Shows basic usage of the Drive v3 API.
-    Prints the names and ids of the first 10 files the user has access to.
-    """
+def doc_sample():
+    """Print names of the files found on the drive"""
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -47,7 +49,7 @@ def main():
         for item in items:
             print(u'{0} ({1})'.format(item['name'], item['id']))
 
-def upload_file(filename, filepath, mimetype):
+def upload_file(files):
     """Upload the specified file"""
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -90,23 +92,25 @@ def upload_file(filename, filepath, mimetype):
                          'parents': [main_parent_id],
                          'mimeType': folder_mimetype}
         folder = service.files().create(body=file_metadata,
-                                            fields='id').execute()
+                                        fields='id').execute()
         print('File ID: %s' % folder.get('id'))
 
         # upload the desired files to the newly created directory (folder_name)
-        parent_id = '%s' % folder.get('id')
-        file_metadata = {'name': filename,
-                         'parents': [parent_id]}
-        media = MediaFileUpload(filepath,
-                                mimetype=mimetype)
-        file = service.files().create(body=file_metadata,
-                                            media_body=media,
-                                            fields='id').execute()
-        print('File ID: %s' % file.get('id'))
+        for file in files:
+            filepath = os.path.join(
+                '/Users/MateuszGrzybek/Desktop/Magisterka/Main/', file[0])
+            parent_id = '%s' % folder.get('id')
+            file_metadata = {'name': file[0],
+                             'parents': [parent_id]}
+            media = MediaFileUpload(filepath,
+                                    mimetype=file[1])
+            file = service.files().create(body=file_metadata,
+                                          media_body=media,
+                                          fields='id').execute()
+            print('File ID: %s' % file.get('id'))
     else:
         print('Folder', folder_name, 'already exists.')
 
 # if __name__ == '__main__':
 #     main()
-upload_file('fizzbuzz.py', os.path.expanduser('~/Desktop/fizzbuzz.py'),
-            'application/x-python-code')
+upload_file(files)
