@@ -82,5 +82,6 @@ def upload_file(files):
             print('File ID: %s' % file.get('id'))
     else:
         print('Folder', folder_name, 'already exists.')
-        
-upload_file(files)
+
+if __name__ == '__main__':
+    upload_file(files)

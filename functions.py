@@ -24,7 +24,7 @@ def match_mimetypes(path, mimetypes):
         for filename in filenames:
             if filename[1] == k:
                 filename.append(v)
-                full_name = filename[0] + filename [1]
+                full_name = filename[0] + filename[1]
                 filename.append(full_name)
 
     return filenames
