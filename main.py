@@ -7,19 +7,23 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from apiclient.http import MediaFileUpload
 
-from functions import get_extensions, match_mimetypes
+from functions import match_mimetypes
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
+
 path = '/Users/MateuszGrzybek/Desktop/Magisterka/Main/'
+
 mimetypes = {'.docx': 'application/msword',
              '.xlsx': 'application/msexcel',
              '.pdf': 'application/pdf',
              '.dwg': 'image/vnd.dwg',
              '.txt': 'text/plain',
              'other': 'application/octet-stream',
-            }
+             }
+
 files = match_mimetypes(path, mimetypes)
+
 
 def upload_file(files):
     """Upload the specified file"""
@@ -57,7 +61,6 @@ def upload_file(files):
     main_parent_id = '1aA5ByhHf-8IIWrm82us4wqgoW78TxVlr'
     folder_mimetype = 'application/vnd.google-apps.folder'
 
-
     if folder_name not in item_names:
         # execute if the desired folder name was not found in non-trashed files
         file_metadata = {'name': folder_name,
@@ -82,6 +85,7 @@ def upload_file(files):
             print('File ID: %s' % file.get('id'))
     else:
         print('Folder', folder_name, 'already exists.')
+
 
 if __name__ == '__main__':
     upload_file(files)

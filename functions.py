@@ -1,5 +1,6 @@
 import os
 
+
 def get_extensions(path):
     """Gets all the files and their extensions from the given path."""
     directory = os.listdir(path)
@@ -13,6 +14,7 @@ def get_extensions(path):
     extensions = [list(os.path.splitext(file)) for file in directory]
 
     return extensions
+
 
 def match_mimetypes(path, mimetypes):
     """Matches mimetypes to the files in the directory, based on their
